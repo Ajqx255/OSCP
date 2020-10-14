@@ -1,0 +1,26 @@
+# start the mysql databse program
+sudo mysql 
+
+# commands must end in a semicolon.
+# Displays all installed databases
+show databases;
+
+# Connects to a specific database
+use <db>;
+
+# Displays all tables in a database
+show tables;
+
+# Displays column names for a given table.
+describe <table>;
+
+# Selects all records from <table>.
+select * from <table>;
+
+# Display all installed databases 
+show databases;
+
+# Dump mysql database to text file
+# mysqldump
+sudo mysqldump <table> > /path/to/file.sql
+

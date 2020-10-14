@@ -1,0 +1,263 @@
+Nikto:
+======
+nikto -C all <Target-Host>
+nikto -Display 1234EP -o report.html -Format htm -Tuning 123bde -host 192.168.0.102
+
+
+burp suite:
+===========
+burp suite 1 has a spder  built in
+burp suite 2 has it a little hidden
+
+
+html2dic:
+=========
+# extract all words from an HTML page, generating a dictionary one word per line
+html2dic
+Uso: ./html2dic <file>
+
+
+gendict:
+========
+# alphanumeric dictionary generator
+# generates an incremental wordlist from the specified pattern
+gendict
+Usage: gendict -type pattern
+  type: -n numeric [0-9]
+        -c character [a-z]
+        -C uppercase character [A-Z]
+        -h hexa [0-f]
+        -a alfanumeric [0-9a-z]
+        -s case sensitive alfanumeric [0-9a-zA-Z]
+  pattern: Must be an ascii string in which every 'X' character wildcard
+           will be replaced with the incremental value.
+
+Example: gendict -n thisword_X
+  thisword_0
+  thisword_1
+  [...]
+  thisword_9
+
+
+dirb:
+=====
+# dirb <url_base> [<wordlist_file(s)>] [options]
+dirb http://url.com/
+dirb http://url.com/ /usr/share/wordlists/dirb/common.txt
+dirb http://url.com/directory/ (Simple Test)
+dirb http://url.com/ -X .html (Test files with '.html' extension)
+dirb http://url.com/ /usr/share/dirb/wordlists/vulns/apache.txt (Test with apache.txt wordlist)
+dirb https://secure_url.com/ (Simple Test with SSL)
+
+========================= NOTES =========================
+ <url_base> : Base URL to scan. (Use -resume for session resuming)
+ <wordlist_file(s)> : List of wordfiles. (wordfile1,wordfile2,wordfile3...)
+
+======================== HOTKEYS ========================
+ 'n' -> Go to next directory.
+ 'q' -> Stop scan. (Saving state for resume)
+ 'r' -> Remaining scan stats.
+
+======================== OPTIONS ========================
+ -a <agent_string> : Specify your custom USER_AGENT.
+ -c <cookie_string> : Set a cookie for the HTTP request.
+ -f : Fine tunning of NOT_FOUND (404) detection.
+ -H <header_string> : Add a custom header to the HTTP request.
+ -i : Use case-insensitive search.
+ -l : Print "Location" header when found.
+ -N <nf_code>: Ignore responses with this HTTP code.
+ -o <output_file> : Save output to disk.
+ -p <proxy[:port]> : Use this proxy. (Default port is 1080)
+ -P <proxy_username:proxy_password> : Proxy Authentication.
+ -r : Don't search recursively.
+ -R : Interactive recursion. (Asks for each directory)
+ -S : Silent Mode. Don't show tested words. (For dumb terminals)
+ -t : Don't force an ending '/' on URLs.
+ -u <username:password> : HTTP Authentication.
+ -v : Show also NOT_FOUND pages.
+ -w : Don't stop on WARNING messages.
+ -X <extensions> / -x <exts_file> : Append each word with this extensions.
+ -z <milisecs> : Add a miliseconds delay to not cause excessive Flood.
+
+
+
+dirbuster (GUI Tool):
+=====================
+# extensions
+php,ini,htm,html,txt,py
+
+
+gobuster:
+=========
+# Scan a url (-u http://192.168.0.155/) for directories 
+# using a wordlist (-w /usr/share/wordlists/dirb/common.txt) 
+# print the full URLs of discovered paths (-e)
+gobuster -e -u http://192.168.0.155/ -w /usr/share/wordlists/dirb/common.txt
+
+# extensions
+gobuster -x php,ini,htm,html,txt,py
+
+# Wordlist Usage
+gobuster -w <wordlist.txt>
+
+# URL Usage
+gobuster -u <url>
+
+# Export option
+gobuster -o <filename>
+
+# Common Command line options
+-fw – force processing of a domain with wildcard results.
+-np – hide the progress output.
+-m  – which mode to use, either dir or dns (default: dir).
+-q – disables banner/underline output.
+-t – number of threads to run (default: 10).
+-u  – full URL (including scheme), or base domain name.
+-v – verbose output (show all results).
+-w  – path to the wordlist used for brute forcing (use – for stdin).
+
+# Command line options for dns mode
+-cn – show CNAME records (cannot be used with ‘-i’ option).
+-i – show all IP addresses for the result.
+
+# Command line options for dir mode
+-a <user agent string> – specify a user agent string to send in the request header.
+-c <http cookies> – use this to specify any cookies that you might need (simulating auth).
+-e – specify extended mode that renders the full URL.
+-f – append / for directory brute forces.
+-k – Skip verification of SSL certificates.
+-l – show the length of the response.
+-n – “no status” mode, disables the output of the result’s status code.
+-o <file> – specify a file name to write the output to.
+-p <proxy url> – specify a proxy to use for all requests (scheme much match the URL scheme).
+-r – follow redirects.
+-s <status codes> – comma-separated set of the list of status codes to be deemed a “positive” (default: 200,204,301,302,307).
+-x <extensions> – list of extensions to check for, if any.
+-P <password> – HTTP Authorization password (Basic Auth only, prompted if missing).
+-U <username> – HTTP Authorization username (Basic Auth only).
+-to <timeout> – HTTP timeout. Examples: 10s, 100ms, 1m (default: 10s).
+
+# help info
+gobuster -h
+
+
+wfuzz:
+======
+Usage:  wfuzz [options] -z payload,params <url>
+
+    FUZZ, ..., FUZnZ  wherever you put these keywords wfuzz will replace them with the values of the specified payload.
+    FUZZ{baseline_value} FUZZ will be replaced by baseline_value. It will be the first request performed and could be used as a base for filtering.
+
+
+Options:
+    -h/--help           : This help
+    --help              : Advanced help
+    --version           : Wfuzz version details
+    -e <type>           : List of available encoders/payloads/iterators/printers/scripts
+   
+    --recipe <filename>     : Reads options from a recipe
+    --dump-recipe <filename>    : Prints current options as a recipe
+    --oF <filename>         : Saves fuzz results to a file. These can be consumed later using the wfuzz payload.
+   
+    -c              : Output with colors
+    -v              : Verbose information.
+    -f filename,printer         : Store results in the output file using the specified printer (raw printer if omitted).
+    -o printer                  : Show results using the specified printer.
+    --interact          : (beta) If selected,all key presses are captured. This allows you to interact with the program.
+    --dry-run           : Print the results of applying the requests without actually making any HTTP request.
+    --prev              : Print the previous HTTP requests (only when using payloads generating fuzzresults)
+   
+    -p addr             : Use Proxy in format ip:port:type. Repeat option for using various proxies.
+                      Where type could be SOCKS4,SOCKS5 or HTTP if omitted.
+   
+    -t N                : Specify the number of concurrent connections (10 default)
+    -s N                : Specify time delay between requests (0 default)
+    -R depth            : Recursive path discovery being depth the maximum recursion level.
+    -L,--follow         : Follow HTTP redirections
+    -Z              : Scan mode (Connection errors will be ignored).
+    --req-delay N           : Sets the maximum time in seconds the request is allowed to take (CURLOPT_TIMEOUT). Default 90.
+    --conn-delay N              : Sets the maximum time in seconds the connection phase to the server to take (CURLOPT_CONNECTTIMEOUT). Default 90.
+   
+    -A              : Alias for --script=default -v -c
+    --script=           : Equivalent to --script=default
+    --script=<plugins>      : Runs script's scan. <plugins> is a comma separated list of plugin-files or plugin-categories
+    --script-help=<plugins>     : Show help about scripts.
+    --script-args n1=v1,...     : Provide arguments to scripts. ie. --script-args grep.regex="<A href="(.*?)">"
+   
+    -u url                      : Specify a URL for the request.
+    -m iterator         : Specify an iterator for combining payloads (product by default)
+    -z payload          : Specify a payload for each FUZZ keyword used in the form of name[,parameter][,encoder].
+                      A list of encoders can be used, ie. md5-sha1. Encoders can be chained, ie. md5@sha1.
+                      Encoders category can be used. ie. url
+                                  Use help as a payload to show payload plugin's details (you can filter using --slice)
+    --zP <params>           : Arguments for the specified payload (it must be preceded by -z or -w).
+    --slice <filter>        : Filter payload's elements using the specified expression. It must be preceded by -z.
+    -w wordlist         : Specify a wordlist file (alias for -z file,wordlist).
+    -V alltype          : All parameters bruteforcing (allvars and allpost). No need for FUZZ keyword.
+    -X method           : Specify an HTTP method for the request, ie. HEAD or FUZZ
+   
+    -b cookie           : Specify a cookie for the requests. Repeat option for various cookies.
+    -d postdata             : Use post data (ex: "id=FUZZ&catalogue=1")
+    -H header           : Use header (ex:"Cookie:id=1312321&user=FUZZ"). Repeat option for various headers.
+    --basic/ntlm/digest auth    : in format "user:pass" or "FUZZ:FUZZ" or "domain\FUZ2Z:FUZZ"
+   
+    --hc/hl/hw/hh N[,N]+        : Hide responses with the specified code/lines/words/chars (Use BBB for taking values from baseline)
+    --sc/sl/sw/sh N[,N]+        : Show responses with the specified code/lines/words/chars (Use BBB for taking values from baseline)
+    --ss/hs regex           : Show/hide responses with the specified regex within the content
+    --filter <filter>       : Show/hide responses using the specified filter expression (Use BBB for taking values from baseline)
+    --prefilter <filter>        : Filter items before fuzzing using the specified expression.
+
+
+# wfuzz Usage Example:
+# Use colour output (-c), a wordlist as a payload (-z file,/usr/share/wfuzz/wordlist/general/common.txt), and hide 404 messages (–hc 404) to fuzz the given URL (http://192.168.1.202/FUZZ):
+wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://192.168.1.202/FUZZ
+
+# Search for Folders using common.txt wordlist
+wfuzz -w wordlist/general/common.txt http://testphp.vulnweb.com/FUZZ
+
+# Search for php Files using common.txt wordlist
+wfuzz -w wordlist/general/common.txt http://testphp.vulnweb.com/FUZZ.php
+
+# Fuzzing Parameters In URLs
+wfuzz -z range,0-10 --hl 97 http://testphp.vulnweb.com/listproducts.php?cat=FUZZ
+
+# Fuzzing POST Requests
+wfuzz -z file,wordlist/others/common_pass.txt -d "uname=FUZZ&pass=FUZZ"  --hc 302 http://testphp.vulnweb.com/userinfo.php
+
+# Fuzz some form-encoded data like an HTML form, simply pass a -d command line argument
+wfuzz -z file,wordlist/others/common_pass.txt -d "uname=FUZZ&pass=FUZZ"  --hc 302 http://testphp.vulnweb.com/userinfo.php
+
+# Fuzzing Cookies
+wfuzz -z file,wordlist/general/common.txt -b cookie=FUZZ http://testphp.vulnweb.com/
+wfuzz -z file,wordlist/general/common.txt -b cookie=value1 -b cookie2=value2 http://testphp.vulnweb.com/FUZZ
+
+# Fuzzing Custom Headers
+wfuzz -z file,wordlist/general/common.txt -H "User-Agent: FUZZ" http://testphp.vulnweb.com/
+wfuzz -z file,wordlist/general/common.txt -H "myheader: headervalue" -H "myheader2: headervalue2" http://testphp.vulnweb.com/FUZZ
+wfuzz -z file,wordlist/general/common.txt -H "myheader: headervalue" -H "User-Agent: Googlebot-News" http://testphp.vulnweb.com/FUZZ
+
+# Using a Proxy
+wfuzz -z file,wordlist/general/common.txt -p localhost:8080 http://testphp.vulnweb.com/FUZZ
+wfuzz -z file,wordlist/general/common.txt -p localhost:2222:SOCKS5 http://testphp.vulnweb.com/FUZZ
+wfuzz -z file,wordlist/general/common.txt -p localhost:8080 -p localhost:9090 http://testphp.vulnweb.com/FUZZ
+
+# Fuzzing Authentication 
+wfuzz -z list,nonvalid-httpwatch --basic FUZZ:FUZZ https://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx
+
+# Recursive Fuzzing
+# The -R switch can be used to specify a payload recursion’s depth. 
+# To search for existing directories and then fuzz within these directories again using the same payload
+wfuzz -z list,"admin-CVS-cgi\-bin"  -R1 http://testphp.vulnweb.com/FUZZ
+
+# Writing to a File
+# Wfuzz supports writing the results to a file in a different format. 
+# This is performed by plugins called “printers”.
+# The available printers can be listed executing:
+wfuzz -e printers
+
+# Write to outputfile in json format
+wfuzz -f /tmp/outfile,json -w wordlist/general/common.txt http://testphp.vulnweb.com/FUZZ
+
+# Show results in JSON format use the following command
+wfuzz -o json -w wordlist/general/common.txt http://testphp.vulnweb.com/FUZZ
+

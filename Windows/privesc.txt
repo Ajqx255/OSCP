@@ -1,0 +1,96 @@
+DLL saerch order:
+=================
+unsafe:
+1. Current Directory
+2. Directory from which the app was loaded
+3. System Directory (C:\Windows\System32)
+4. the 16-bit system directory (C:\Windows\System)
+5, Windows Directory (C:\Windows)
+6. Directories listed in the PATH variables
+safe(r):
+1. Directory from which the app was loaded
+2. System Directory (C:\Windows\System32)
+3. the 16-bit system directory (C:\Windows\System)
+4, Windows Directory (C:\Windows)
+5. Current Directory
+6. Directories listed in the PATH variables
+
+
+ProcMon:
+========
+# learn to build proxy DDLs
+# download from microsfot.com
+# search for missinf DLLs
+# look for results that are:
+# NAME NOT FOUND
+
+
+# Check folder permissions:
+icacls C:\<Folder\Location>
+looking for (WD) or (AD)
+- Delete: removes files or DLLs
+- Write Data/ Add File: add a DLL that is sideloaded into an application with elevated privileges
+- Write Attributes: set file attributes to hidden or system, poenially hiding them from view by most users
+- Append Data: allows the user to add data to the end of a file, but not overwrite any existing data
+- Change Permissions: this is pretty much full control 
+
+
+# if any portion of the SYSTEM %PATH% variable is writeable by Authenticated Users, there are opportunities for privilege escalation. 
+# check the PATH Variable
+reg query "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment"
+
+
+# registry keys have permissions
+# Subinacl tool (windows resource kit)
+# obtain ACL info on registry keys:
+subinacl /keyreg HKEY_LOCAL_MACHINE\software\microsoft
+# now in Powershell
+# obtain ACL info on registry keys:
+Get-Acl HKLM:\software |format-list
+
+
+# NETSH	**************************
+# Netsh is called all the time and is safer to use on a pentest.
+# Usage: netsh [-a AliasFile] {-c Context] [-r RemoteMachine] [-u [DomainName\]UserName] [-p Password | *} {Command | -f ScriptFile]
+netsh -c trace ????
+
+
+# look for services in directory with interesting permiswsions:
+C:\Users\rendition> wmic service get pathname |findstr /i f-response
+# response:
+# C:\Program Files\F-Response\f-response-lm-srv.exe
+# Now get directory premissins:
+C:\Users\rendition> icacls "c:\program files\f-response"
+
+
+# Make an exe and get it to run
+# If a program is not using quotes in its path
+# Windows will assume every space is the end and add ".exe" 
+# too see if it exists and run it
+# Ex: C:\program file (x86)\custom app\my custom app.exe
+# Will check all these possibilities
+C:\program.exe
+C:\program file.exe
+C:\program file (x86)\custom.exe
+C:\program file (x86)\custom app\my.exe
+C:\program file (x86)\custom app\my custom.exe
+
+
+# Look for the InstallAlwaysElevated:
+- HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer
+- HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer
+# If these are configured you can use MSFVenom to build an MSI to elevate permissions. 
+
+
+#search for unattend.xml could have passwords stored in plain text or base64
+
+
+# to look for partially uninstalled programs that left 
+# COM registry files you can abuse, check out:
+https://bohops.com/2018/06/28/abusing-com-registry-structure-clsid-localserver32-inprocserver32
+
+
+
+ProcMon?????
+
+

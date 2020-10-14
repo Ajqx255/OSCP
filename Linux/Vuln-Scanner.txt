@@ -1,0 +1,14 @@
+# Vulnerability Assessment
+==========================
+# Install OpenVAS 8 on Kali Rolling:
+apt-get update
+apt-get dist-upgrade -y
+apt-get install openvas
+openvas-setup
+
+# Verify openvas is running using:
+netstat -tulpn
+Login at https://127.0.0.1:9392 - credentials are generated during openvas-setup.
+
+# nmap vuknerability scan
+nmap --script vuln <ip-address>

@@ -1,0 +1,157 @@
+Windows Commands:
+=================
+
+Command			Function
+=======			========
+cd or chdir		Change directory
+dir			list contents of current directory
+md or mkdir		make director
+copy			copy files
+move			move files (cut and paste)
+del or erase		delete files and directories
+rd or rmdir		remove directory if it is empty
+find			search a file for a specified string
+exit			close cmd
+type			show contents of specified file (like cat in Linux)
+cls			clear screen
+
+
+WMIC (Windows Management Instrumentation Command):
+==================================================
+wmic [global switches] [alias] [verbs] [properties]
+wmic     /APPEND	os	get	caption
+# append the windows build number to the report.txt file
+wmic /APPEND:report.txt os get caption		
+
+# show windows info
+wmic os
+wmic os get caption
+wmic os get caption, buildnumber
+wmic os get /value
+
+# show drive info
+wmic logicaldisk
+wmic logicaldisk get caption
+wmic logicaldisk get caption, filesystem, freespace, size, volumeserialnumber
+wmic logicaldisk get /value
+
+Aliases:
+--------
+useraccount	retrieves info about user account
+netlogin	retrieves user logon metrics
+qfe		retrieves info about windows updates installed on the system
+startup		retrieves info about startup applications on the system
+where		narrows down results to match a specified property
+logicaldisk	retrieves drive info
+os		retrieves OS info
+
+
+Net Command:
+============
+net user		for managing users
+net localgroup		for managing local groups
+net accounts		for viewing password and logon requirements to enforce password policy
+
+# add a user (password is optional)
+net user [username] [password] /add
+# to set password for user if none was set when creating user
+net user [username] * 
+
+# add a user to group
+net localgroup [group] [username] /add
+
+
+
+
+Windows Environment Variables:
+==============================
+
+envvars			default value
+=======			=============
+%CD%			Print Working Directory
+%DATE%			Current Date
+%OS%			Windows
+%ProgramFiles%		C:\ProgramFiles
+%ProgramFiles(x86)%	C:\ProgramFiles(x86)
+%TIME%			Current Time
+%USERPROFILE%		C:\Users\{username}
+%SYSTEMDRIVE%		C:\
+%SYSTEMROOT%		C:\Windows
+
+
+
+
+Standard (built-in) Environment Variables:
+==========================================
+Variable 			Default value assuming the system drive is C:
+ALLUSERSPROFILE 	  	C:\ProgramData
+APPDATA 	  		C:\Users\{username}\AppData\Roaming
+CD 	 			The current directory (string).
+ClientName 	 		Terminal servers only - the ComputerName of a remote host.
+CMDEXTVERSION 	 		The current Command Processor Extensions version number. (NT = "1", Win2000+ = "2".)
+CMDCMDLINE 	 		The original command line that invoked the Command Processor.
+CommonProgramFiles 	  	C:\Program Files\Common Files
+COMMONPROGRAMFILES(x86) 	C:\Program Files (x86)\Common Files
+COMPUTERNAME 	  		{computername}
+COMSPEC 	  		C:\Windows\System32\cmd.exe or if running a 32 bit WOW - C:\Windows\SysWOW64\cmd.exe
+DATE 	 			The current date using same region specific format as DATE.
+ERRORLEVEL 	 		The current ERRORLEVEL value, automatically set when a program exits.
+FPS_BROWSER_APP_PROFILE_STRING	Internet Explorer
+FPS_BROWSER_USER_PROFILE_STRING	These are undocumented variables for the Edge browser in Windows 10.
+HighestNumaNodeNumber 	 	The highest NUMA node number on this computer.
+HOMEDRIVE 	 		C:
+HOMEPATH 	 		\Users\{username}
+LOCALAPPDATA 	  		C:\Users\{username}\AppData\Local
+LOGONSERVER 	  		\\{domain_logon_server}
+NUMBER_OF_PROCESSORS 	 	The Number of processors running on the machine.
+OS 	 			Operating system on the user's workstation.
+PATH 			 	C:\Windows\System32\;C:\Windows\;C:\Windows\System32\Wbem;{plus program paths}
+PATHEXT 			.COM; .EXE; .BAT; .CMD; .VBS; .VBE; .JS ; .WSF; .WSH; .MSC
+				Determine the default executable file extensions to search for and use, and in which order, left to right. The syntax is like the PATH variable - semicolon separators.
+PROCESSOR_ARCHITECTURE 	 	AMD64/IA64/x86 This doesn't tell you the architecture of the processor but only of the current process, so it returns "x86" for a 32 bit WOW process running on 64 bit Windows. See detecting OS 32/64 bit
+PROCESSOR_ARCHITEW6432 	  	=%PROCESSOR_ARCHITECTURE% (but only available to 64 bit processes)
+PROCESSOR_IDENTIFIER 	 	Processor ID of the user's workstation.
+PROCESSOR_LEVEL 	 	Processor level of the user's workstation.
+PROCESSOR_REVISION 	 	Processor version of the user's workstation.
+ProgramW6432 	  		=%ProgramFiles%(but only available when running under a 64 bit OS)
+ProgramData 	  		C:\ProgramData
+ProgramFiles 	  		C:\Program Files or C:\Program Files (x86)
+ProgramFiles(x86) 1 	  	C:\Program Files (x86)   (but only available when running under a 64 bit OS)
+PROMPT 	  			Code for current command prompt format,usually $P$G
+				C:>
+PSModulePath 	  		%SystemRoot%\system32\WindowsPowerShell\v1.0\Modules\
+Public 	  			C:\Users\Public
+RANDOM 	 			A random integer number, anything from 0 to 32,767 (inclusive).
+%SessionName% 	  		Terminal servers only - for a terminal server session, SessionName is a combination of the connection name, followed by #SessionNumber. For a console session, SessionName returns "Console".
+SYSTEMDRIVE 	  		C:
+SYSTEMROOT 	  		By default, Windows is installed to C:\Windows but there's no guarantee of that, Windows can be installed to a different folder, or a different drive letter. systemroot is a read-only system variable that will resolve to the correct location. Defaults in early Windows versions are C:\WINNT, C:\WINNT35 and C:\WTSRV
+TEMP and TMP 	User Variable 	C:\Users\{Username}\AppData\Local\Temp  Under XP this was \{username}\Local Settings\Temp
+TIME 	 			The current time using same format as TIME.
+UserDnsDomain 			User Variable 	Set if a user is a logged on to a domain and returns the fully qualified DNS domain that the currently logged on user's account belongs to.
+USERDOMAIN 	  		{userdomain}
+USERDOMAIN_roamingprofile 	The user domain for RDS or standard roaming profile paths. Windows 8/10/2012 (or Windows 7/2008 with Q2664408)
+USERNAME 	  		{username}
+USERPROFILE 	  		%SystemDrive%\Users\{username}  This is equivalent to the $HOME environment variable in Unix/Linux
+WINDIR 	  			%windir% is a regular User variable and can be changed, which makes it less robust than %SystemRoot%
+				Set by default as windir=%SystemRoot%
+				%WinDir% pre-dates Windows NT, its use in many places has been replaced by the system variable: %SystemRoot%
+
+
+Common PowerShell Commands table:
+=================================
+Cmdlet 		Function 						Equivalent Command
+======		========						==================
+Set-Location 	Changes to specified directory 				cd
+Get-ChildItem 	Returns current directory's contents 			ls, dir
+New-Item 	Makes a new directory 					mkdir
+Remove-Item 	Deletes a file or directory 				rm, rmdir
+Get-Location 	Retrieves path to current directory 			pwd
+Get-Content 	Returns file contents 					cat, type
+Copy-Item 	Copies a file from one given location to another 	cp
+Move-Item 	Moves a file from one given location to another 	mv
+Write-Output 	Prints output 						echo
+Get-Alias 	Shows aliases for the current session 			alias
+Get-Help 	Retrieves information about PowerShell commands 	man
+Get-Process 	Gets processes running on local machine 		ps
+Stop-Process 	Stops one or more defined processes 			kill
+Get-Service 	Gets a list of services 				service --status-all

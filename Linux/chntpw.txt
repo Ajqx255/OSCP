@@ -1,0 +1,21 @@
+chntpw:
+=======
+# works on windows xp, 7, Vista, 8 and 8.1 passwords
+# will allow you to change the users password in the SAM file
+# Boot computer from Kali Live USB drive
+
+cd /media/<Hard-Drive>/Windows/System32/config
+ls -l SAM*
+
+# List usernames
+chntpw -l SAM 
+
+# change users Password
+chntpw -u <username> SAM 
+chntpw -u Administrator SAM
+
+# Follow menu options
+# Can Clear User Password, Edit User Password, 
+# Promote User, Unlock or Enable the User Account 
+
+
