@@ -2,6 +2,12 @@
 
 This is where I will be keeping all my references, notes, and code that I plan to use for the OSCP. I am making them public so that I can share this with the monitors, once I take the OSCP. 
 
+## Study:
+1. Buffer Overflow 
+2. Linux Commands and Privilege Escalation
+3. Windows Commands and Privilege Escalation
+4. Metasploit Emergency Use
+
 ## Currently contains: 
 1. Buffer Overflow Notes
 2. Linux Commands and Privilege Escalation
@@ -19,8 +25,45 @@ This is where I will be keeping all my references, notes, and code that I plan t
 9. Linux Kernel Exploits — https://github.com/lucyoa/kernel-exploits
 10. Hashcat — https://hashcat.net/hashcat/
 11. John the Ripper — https://www.openwall.com/john/
+12. pattern_create.rb
+13. pattern_offset.rb
 
+# Exam Guide:
+https://help.offensive-security.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide
 
+## Exam Proof Filenames
+1. proof.txt - This file is only accessible to the root or Administrator user and can be found under the /root/ directory or the Administrator Desktop. This file is available on every target machine.
+2. local.txt - This file is accessible to an un-privileged user account and can only be found on certain machines. The targets containing these files are detailed in your control panel.
+
+## Point Allocation
+1. The order in which the exam machines are documented inside your exam report is the same order in which the exam machines will be graded and valued
+2. Points will be awarded for partial and complete administrative control of each target machine
+3. Each machine has a specific set of objectives that must be met in order to receive full points
+4. You must achieve a minimum score of 70 points to pass the exam
+5. It is possible to achieve a maximum of 100 points on the exam
+6. Specific objectives and point values for each machine are located in your exam control panel
+
+## Point Disqualification
+You will receive no points for a specific target for the following:
+1. Using a restricted tool
+2. Using Metasploit Auxiliary, Exploit, or Post modules on multiple machines
+3. Using the Meterpreter payload on multiple machines
+4. Failure to provide the local.txt and proof.txt file contents in both the control panel and in a screenshot
+
+## Metasploit Restrictions
+The usage of Metasploit and the Meterpreter payload are restricted during the exam. You may only use Metasploit modules ( Auxiliary, Exploit, and Post ) or the Meterpreter payload against one single target machine of your choice. Once you have selected your one target machine, you cannot use Metasploit modules ( Auxiliary, Exploit, or Post ) or the Meterpreter payload against any other machines.
+
+Metasploit/Meterpreter should not be used to test vulnerabilities on multiple machines before selecting your one target machine ( this includes the use of check ) . You may use Metasploit/Meterpreter as many times as you would like against your one target machine.
+
+If you decide to use Metasploit or Meterpreter on a specific target and the attack fails, then you may not attempt to use it on a second target. In other words, the use of Metasploit and Meterpreter becomes locked in as soon as you decide to use either one of them.
+
+```
+You may use the following against all of the target machines:
+1. multi handler (aka exploit/multi/handler)
+2. msfvenom
+3. pattern_create.rb
+4. pattern_offset.rb
+```
 
 # Unofficial OSCP Approved Tools:
 info taken from: https://medium.com/@falconspy/unofficial-oscp-approved-tools-b2b4e889e707
