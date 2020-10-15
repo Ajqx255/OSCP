@@ -1,0 +1,150 @@
+linux priv esc:
+===============
+taviso LD_Preload
+SUID Binaries
+Race condition/Symlink
+Perl or python script
+bad permissions
+
+
+windows priv esc:
+=================
+taviso KiTrap0D
+latest win32k.sys font bug
+metasploit:getSystem()
+no suid
+no env passing
+check for mapped drives??
+
+
+# Easy Password Grabs:
+https://www.nirsoft.net/password_recovery_tools.html
+
+## unattended Installs:
+Get-Childitem –Path C:\ -Include unattended.xml -Recurse -ErrorAction SilentlyContinue
+unattended.xml usually found in
+%WINDIR%\Panther\Unattended
+%WINDIR%\Panther\
+
+## Search system:
+Registry keys:
+reg query HKLM /f password /t REG_SZ /s | clip 
+reg query HKCU /f password /t REG_SZ /s | clip 
+
+### CMD:
+Find proof.txt or local.txt
+
+cd c:\Users\administrator\Desktop
+dir *.txt /s /p
+
+cd C:\
+dir secret.doc /s /p
+The /s option directs a search of all folders on the hard drive; the /p option pauses the display after each screen of text. Double-check everything!
+
+search for python (tons of output):
+dir *.py /s /p
+
+search for perl:
+dir *.pl /s /p
+
+dir /s *pass*
+dir /s *cred*
+dir /s *vnc*
+dir /s *.config
+
+
+
+### Powershell:
+search for specific files:
+Get-Childitem –Path C:\ -Include *.py -Recurse -ErrorAction SilentlyContinue
+Get-Childitem –Path C:\ -Include *HSG* -Exclude *.JPG,*.MP3,*.TMP -File -Recurse -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\ -Include *.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+
+grep a string:
+search for any file that ends in .txt for the pattern (or string) pass
+cd C:\
+Select-String -Path *.txt -Pattern "pass"
+ls -r | Select-String "test" | Select Path, LineNumber | Format-List
+
+### Powershell search for all .txt files containing the phrase "password"
+cd C:\
+ls -r *.txt | Select-String -Pattern "password" | Select Path, LineNumber | Format-List
+ls -r *.txt | Select-String -Pattern "password" -ErrorAction SilentlyContinue
+
+### findstr (grep):
+need to get this to work so I can search for python and perl scripts as well
+findstr /si password *.txt | *.xml | *.ini | *.rdp
+
+## systems with citrix:
+check for c:\unattended.txt 
+may have clear text password for admin
+if so:
+RUNAS /U:LOCALADMIN CMD.EXE
+
+## Sysprep:
+c:\sysprep.inf			[Clear Text Password]
+c:\sysprep\sysprep.xml		[Base64 Encoded Password]
+
+## VNC: 
+easy to decrypt
+vnc.ini
+ultravnc.ini
+
+## FTP?
+password locations?
+
+## Registry Keys:
+autologin: 
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\AlternateShells
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\GPExtensions
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\SpecialAccounts
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\UserDefaults
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\AutoLogonChecked
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon\VolatileUserMgrKey
+
+SNMP: 
+HKLM\SYSTEM\CurrentControlSet\Services\SNMP
+
+Putty:
+HKCU\SOFTWARE\SimonTatham\PuTTY\Sessions
+
+Generic Search: 
+the clip on the end puts the output to the clipboard so you can easily paste into a txt file. 
+reg query HKLM /f password /t REG_SZ /s | clip 
+reg query HKCU /f password /t REG_SZ /s | clip 
+
+Always Installs Software with Elevated Priv:
+HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+
+
+
+
+
+## Check task manager for apps running as SYSTEM to see if you can open them to see if you can get an elevated terminal
+
+
+## search for permision on program files looking for binaries you can overwrite. 
+cd C:\
+cacls "Program Files"
+cacls \testperms
+
+
+
+# Requires admin access already but gives SYSTEM control:
+-------------------------------------------------------
+"at" command runs as "SYSTEM"
+example: 
+at 13:01 /interactive cmd
+
+
+
+
+
+Windows Questions:
+==================
+how do I see what patch level the system is at? 
+can I add Program.exe to get a remote shell to open? if so need example. 
