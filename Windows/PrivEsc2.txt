@@ -16,6 +16,10 @@ no suid
 no env passing
 check for mapped drives??
 
+Check for missing patches:
+==========================
+c:\> wmic qfe get Caption,Description,HotFixID,InstalledOn
+look up on exploit database. 
 
 # Easy Password Grabs:
 https://www.nirsoft.net/password_recovery_tools.html
@@ -141,10 +145,38 @@ example:
 at 13:01 /interactive cmd
 
 
+Check for missing patches:
+==========================
+c:\> wmic qfe get Caption,Description,HotFixID,InstalledOn
 
+
+search exploit-db for Vulnerabilities:
+in Kali:
+# searchsploit MS16 windows local
+
+
+SessionGopher- find credentials
+
+Hot Potato (foxglovesec)- mitm windows
+
+Powerup by harmj0y- priv esc windows:
+=====================================
+show our user is not currently admin:
+net localgroup administrators
+
+start powershell:
+powershell.exe -exec bypass
+
+start powerup:
+.\PowerUp.ps1
+
+Invoke-AllChecks
+
+Write-UserAddNSI
+
+creates an app on the desktop for making a new user. 
 
 
 Windows Questions:
 ==================
-how do I see what patch level the system is at? 
 can I add Program.exe to get a remote shell to open? if so need example. 
