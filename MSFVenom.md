@@ -1,7 +1,18 @@
 # Metasploit Handler:
+
+LHOST=local host
+LPORT=local port
+
+RHOST=remote host
+RPORT=remote port
+
 ```
+msfconsole -q
+show options
+show payloads
 use exploit/multi/handler
 set PAYLOAD <Payload name>
+show options
 Set RHOST <Remote IP>
 set LHOST <Local IP>
 set LPORT <Local Port>
