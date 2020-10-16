@@ -40,6 +40,13 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 147.43 seconds
 
 
+Find the DC specifically:
+=========================
+using port 389 is the give away. 
+# sudo nmap -p389 -sV 192.168.1.28
+389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+
+
 change directory to the zerologon exploit folder:
 =================================================
 
