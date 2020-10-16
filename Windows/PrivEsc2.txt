@@ -97,6 +97,16 @@ ultravnc.ini
 ## FTP?
 password locations?
 
+## Passwords!!
+dir /s *pass* == *cred* == *vnc* == *.config*
+ findstr /si password *.xml *.ini *.txt
+reg query HKLM /f password /t REG_SZ /s
+reg query HKCU /f password /t REG_SZ /s
+web.config
+php.ini
+httpd.conf
+access.log
+
 ## Registry Keys:
 autologin: 
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
