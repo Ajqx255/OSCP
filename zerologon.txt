@@ -44,11 +44,173 @@ Find the DC specifically:
 =========================
 All domain controllers listen on port 389
 # sudo nmap -p389 -sV 192.168.1.28
-389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 22:25 PDT
+Nmap scan report for 192.168.1.28
+Host is up (0.00037s latency).
 
-use NMap to scan an address range with the ldap-rootdse script
-nmap -p 389 -T4 -A -v --script ldap-rootdse nnn.nnn.nnn.nnn/nn
+PORT    STATE SERVICE VERSION
+389/tcp open  ldap    Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+MAC Address: 08:00:27:AA:C2:F6 (Oracle VirtualBox virtual NIC)
+Service Info: Host: ZEROLOGON-DC; OS: Windows; CPE: cpe:/o:microsoft:windows
 
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 6.45 seconds
+
+
+use NMap to scan an address range with the ldap-rootdse script:
+===============================================================
+# sudo nmap -p 389 -T4 -A -v --script ldap-rootdse 192.168.1.28
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 22:27 PDT
+NSE: Loaded 46 scripts for scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Initiating ARP Ping Scan at 22:27
+Scanning 192.168.1.28 [1 port]
+Completed ARP Ping Scan at 22:27, 0.00s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 22:27
+Completed Parallel DNS resolution of 1 host. at 22:27, 0.01s elapsed
+Initiating SYN Stealth Scan at 22:27
+Scanning 192.168.1.28 [1 port]
+Discovered open port 389/tcp on 192.168.1.28
+Completed SYN Stealth Scan at 22:27, 0.00s elapsed (1 total ports)
+Initiating Service scan at 22:27
+Scanning 1 service on 192.168.1.28
+Completed Service scan at 22:27, 6.01s elapsed (1 service on 1 host)
+Initiating OS detection (try #1) against 192.168.1.28
+Retrying OS detection (try #2) against 192.168.1.28
+NSE: Script scanning 192.168.1.28.
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Nmap scan report for 192.168.1.28
+Host is up (0.0011s latency).
+
+PORT    STATE SERVICE VERSION
+389/tcp open  ldap    Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+| ldap-rootdse: 
+| LDAP Results
+|   <ROOT>
+|       currentTime: 20201015204910.0Z
+|       subschemaSubentry: CN=Aggregate,CN=Schema,CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       dsServiceName: CN=NTDS Settings,CN=ZEROLOGON-DC,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       namingContexts: DC=zerologon,DC=learn,DC=now
+|       namingContexts: CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       namingContexts: CN=Schema,CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       namingContexts: DC=DomainDnsZones,DC=zerologon,DC=learn,DC=now
+|       namingContexts: DC=ForestDnsZones,DC=zerologon,DC=learn,DC=now
+|       defaultNamingContext: DC=zerologon,DC=learn,DC=now
+|       schemaNamingContext: CN=Schema,CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       configurationNamingContext: CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       rootDomainNamingContext: DC=zerologon,DC=learn,DC=now
+|       supportedControl: 1.2.840.113556.1.4.319
+|       supportedControl: 1.2.840.113556.1.4.801
+|       supportedControl: 1.2.840.113556.1.4.473
+|       supportedControl: 1.2.840.113556.1.4.528
+|       supportedControl: 1.2.840.113556.1.4.417
+|       supportedControl: 1.2.840.113556.1.4.619
+|       supportedControl: 1.2.840.113556.1.4.841
+|       supportedControl: 1.2.840.113556.1.4.529
+|       supportedControl: 1.2.840.113556.1.4.805
+|       supportedControl: 1.2.840.113556.1.4.521
+|       supportedControl: 1.2.840.113556.1.4.970
+|       supportedControl: 1.2.840.113556.1.4.1338
+|       supportedControl: 1.2.840.113556.1.4.474
+|       supportedControl: 1.2.840.113556.1.4.1339
+|       supportedControl: 1.2.840.113556.1.4.1340
+|       supportedControl: 1.2.840.113556.1.4.1413
+|       supportedControl: 2.16.840.1.113730.3.4.9
+|       supportedControl: 2.16.840.1.113730.3.4.10
+|       supportedControl: 1.2.840.113556.1.4.1504
+|       supportedControl: 1.2.840.113556.1.4.1852
+|       supportedControl: 1.2.840.113556.1.4.802
+|       supportedControl: 1.2.840.113556.1.4.1907
+|       supportedControl: 1.2.840.113556.1.4.1948
+|       supportedControl: 1.2.840.113556.1.4.1974
+|       supportedControl: 1.2.840.113556.1.4.1341
+|       supportedControl: 1.2.840.113556.1.4.2026
+|       supportedControl: 1.2.840.113556.1.4.2064
+|       supportedControl: 1.2.840.113556.1.4.2065
+|       supportedControl: 1.2.840.113556.1.4.2066
+|       supportedControl: 1.2.840.113556.1.4.2090
+|       supportedControl: 1.2.840.113556.1.4.2205
+|       supportedControl: 1.2.840.113556.1.4.2204
+|       supportedControl: 1.2.840.113556.1.4.2206
+|       supportedControl: 1.2.840.113556.1.4.2211
+|       supportedControl: 1.2.840.113556.1.4.2239
+|       supportedControl: 1.2.840.113556.1.4.2255
+|       supportedControl: 1.2.840.113556.1.4.2256
+|       supportedControl: 1.2.840.113556.1.4.2309
+|       supportedLDAPVersion: 3
+|       supportedLDAPVersion: 2
+|       supportedLDAPPolicies: MaxPoolThreads
+|       supportedLDAPPolicies: MaxPercentDirSyncRequests
+|       supportedLDAPPolicies: MaxDatagramRecv
+|       supportedLDAPPolicies: MaxReceiveBuffer
+|       supportedLDAPPolicies: InitRecvTimeout
+|       supportedLDAPPolicies: MaxConnections
+|       supportedLDAPPolicies: MaxConnIdleTime
+|       supportedLDAPPolicies: MaxPageSize
+|       supportedLDAPPolicies: MaxBatchReturnMessages
+|       supportedLDAPPolicies: MaxQueryDuration
+|       supportedLDAPPolicies: MaxDirSyncDuration
+|       supportedLDAPPolicies: MaxTempTableSize
+|       supportedLDAPPolicies: MaxResultSetSize
+|       supportedLDAPPolicies: MinResultSets
+|       supportedLDAPPolicies: MaxResultSetsPerConn
+|       supportedLDAPPolicies: MaxNotificationPerConn
+|       supportedLDAPPolicies: MaxValRange
+|       supportedLDAPPolicies: MaxValRangeTransitive
+|       supportedLDAPPolicies: ThreadMemoryLimit
+|       supportedLDAPPolicies: SystemMemoryLimitPercent
+|       highestCommittedUSN: 16410
+|       supportedSASLMechanisms: GSSAPI
+|       supportedSASLMechanisms: GSS-SPNEGO
+|       supportedSASLMechanisms: EXTERNAL
+|       supportedSASLMechanisms: DIGEST-MD5
+|       dnsHostName: ZEROLOGON-DC.zerologon.learn.now
+|       ldapServiceName: zerologon.learn.now:zerologon-dc$@ZEROLOGON.LEARN.NOW
+|       serverName: CN=ZEROLOGON-DC,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=zerologon,DC=learn,DC=now
+|       supportedCapabilities: 1.2.840.113556.1.4.800
+|       supportedCapabilities: 1.2.840.113556.1.4.1670
+|       supportedCapabilities: 1.2.840.113556.1.4.1791
+|       supportedCapabilities: 1.2.840.113556.1.4.1935
+|       supportedCapabilities: 1.2.840.113556.1.4.2080
+|       supportedCapabilities: 1.2.840.113556.1.4.2237
+|       isSynchronized: TRUE
+|       isGlobalCatalogReady: TRUE
+|       domainFunctionality: 7
+|       forestFunctionality: 7
+|_      domainControllerFunctionality: 7
+MAC Address: 08:00:27:AA:C2:F6 (Oracle VirtualBox virtual NIC)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 2016|2012|7 (98%)
+OS CPE: cpe:/o:microsoft:windows_server_2016 cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_7::-:professional
+Aggressive OS guesses: Microsoft Windows Server 2016 (98%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (93%), Microsoft Windows Server 2012 R2 (91%), Microsoft Windows 7 Professional (89%)
+No exact OS matches for host (test conditions non-ideal).
+Uptime guess: 0.003 days (since Thu Oct 15 22:23:15 2020)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=258 (Good luck!)
+IP ID Sequence Generation: Incremental
+Service Info: Host: ZEROLOGON-DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   1.05 ms 192.168.1.28
+
+NSE: Script Post-scanning.
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Initiating NSE at 22:27
+Completed NSE at 22:27, 0.00s elapsed
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 10.59 seconds
+           Raw packets sent: 76 (7.036KB) | Rcvd: 20 (1.540KB)
 
 
 change directory to the zerologon exploit folder:
