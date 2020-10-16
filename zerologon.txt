@@ -10,6 +10,35 @@ you need the NetBIOS Name (PC name) for the Windows Domain Controller you are at
 you need the IP address for the Windows Domain Controller you are attacking
 That is all!!
 
+Nmap to therescue:
+==================
+sudo nmap -sV 192.168.1.28
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 17:23 PDT
+Nmap scan report for 192.168.1.28
+Host is up (0.00019s latency).
+Not shown: 989 filtered ports
+PORT     STATE SERVICE      VERSION
+53/tcp   open  domain?
+88/tcp   open  kerberos-sec Microsoft Windows Kerberos (server time: 2020-10-15 20:58:08Z)
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds (workgroup: ZEROLOGON)
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap         Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port53-TCP:V=7.80%I=7%D=10/15%Time=5F88E827%P=x86_64-pc-linux-gnu%r(DNS
+SF:VersionBindReqTCP,20,"\0\x1e\0\x06\x81\x04\0\x01\0\0\0\0\0\0\x07version
+SF:\x04bind\0\0\x10\0\x03");
+MAC Address: 08:00:27:AA:C2:F6 (Oracle VirtualBox virtual NIC)
+Service Info: Host: ZEROLOGON-DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 147.43 seconds
+
 
 change directory to the zerologon exploit folder:
 =================================================
