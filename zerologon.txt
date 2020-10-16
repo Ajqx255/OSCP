@@ -42,9 +42,13 @@ Nmap done: 1 IP address (1 host up) scanned in 147.43 seconds
 
 Find the DC specifically:
 =========================
-using port 389 is the give away. 
+All domain controllers listen on port 389
 # sudo nmap -p389 -sV 192.168.1.28
 389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: zerologon.learn.now, Site: Default-First-Site-Name)
+
+use NMap to scan an address range with the ldap-rootdse script
+nmap -p 389 -T4 -A -v --script ldap-rootdse nnn.nnn.nnn.nnn/nn
+
 
 
 change directory to the zerologon exploit folder:
