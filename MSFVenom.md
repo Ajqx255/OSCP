@@ -13,6 +13,11 @@ Run
 msfvenom -l
 ```
 
+## look at payload options:
+```
+msfvenom --payload-options -p windows/shell/reverse_tcp
+```
+
 ## Staged payloads: 
 Staged payloads are denoted with the use of a forward slash (/; e.g. windows/shell/reverse_tcp). Staged payloads send a small stager to the target, which connects back to the attacker and downloads the rest of the payload. Therefore, staged payloads need special payload listeners, such as multi/handler in Metasploit. Staged payloads are ideal in situations where you have limited shellcode space, most commonly in Buffer Overflows.
 
