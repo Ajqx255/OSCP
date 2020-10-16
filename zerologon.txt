@@ -10,8 +10,8 @@ you need the NetBIOS Name (PC name) for the Windows Domain Controller you are at
 you need the IP address for the Windows Domain Controller you are attacking
 That is all!!
 
-Nmap to therescue:
-==================
+Nmap to the rescue:
+===================
 sudo nmap -sV 192.168.1.28
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 17:23 PDT
 Nmap scan report for 192.168.1.28
