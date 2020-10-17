@@ -27,6 +27,11 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 6.45 seconds
 ```
 
+## In Our Example:
+1. Domain Name = ZEROLOGON
+2. NetBIOS Name = ZEROLOGON-DC
+3. IP address = 192.168.1.28
+
 ## change directory to the zerologon exploit folder:
 
 ```
