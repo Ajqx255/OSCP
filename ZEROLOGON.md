@@ -11,9 +11,7 @@
 ## Nmap to the rescue:
 ### Find the DC specifically:
 All domain controllers listen on port 389
-```
-sudo nmap -p389 -sV 192.168.1.28
-```
+
 ```
 sudo nmap -p389 -sV 192.168.1.28
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 22:25 PDT
