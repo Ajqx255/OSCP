@@ -2,9 +2,9 @@
 
 ## Before you begin:
 
-1. you need the Domain Name for the Windows Domain Controller you are attacking
-2. you need the NetBIOS Name (PC name) for the Windows Domain Controller you are attacking
-3. you need the IP address for the Windows Domain Controller you are attacking
+1. you need the Domain Name for the Windows Domain Controller you are attacking.
+2. you need the NetBIOS Name (PC name) for the Windows Domain Controller you are attacking.
+3. you need the IP address for the Windows Domain Controller you are attacking. 
 **That is all!!**
 
 ## Nmap to the rescue:
