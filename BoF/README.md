@@ -238,6 +238,9 @@ under module information we are looking for all “False” labels and attached 
 ```
 
 #### Kali Linux:
+##### look up assembly code for jmp esp
+##### FFE4
+##### \xff\xe4
 ```
 # locate nsam_shell
 copy location address. Then run it.
