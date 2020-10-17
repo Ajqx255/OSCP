@@ -58,6 +58,15 @@ Each time an error is cause you will need to restart both VulnServer and Immunit
 Check the EBP for 41414141 meaning it over wrote it will A’s to verify we can buffer overflow. You may also see that you over wrote the ESP and EIP. 
 
 
+If you look at the EAX register ASCII you will notice 
+```
+EAX 0102F1E8 ASCII TRUN /.:/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...
+```
+
+This tells us that when we Fuzz the program we will have to use 
+```
+TRUN /.:/
+```
 
 ## Fuzzing: 
 
