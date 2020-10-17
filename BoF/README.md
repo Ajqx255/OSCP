@@ -212,16 +212,22 @@ run the badchars.py script
 
 #### Windows 10: 
 look at the Hex dump
+
 Immunity Debugger Registers window
+
 	right click on ESP > Follow in Dump
-in Dump window you will go through the HEX DUMP looking to see if everything matches what you sent to the program in badchars.py. Any missing or replaced characters are considered bad characters and should be removed from the final part. 
+
+in Dump window you will go through the HEX DUMP looking to see if everything matches what you sent to the program in badchars.py. Any missing or replaced characters are 
+considered bad characters and should be removed from the final part. 
 
 
 ## Finding the Right Module:
 
 #### Windows 10:
 mona module can be used with Immunity Debugger to help us find the module or DLL that has no memory protection. 
+
 Download mona.py from https://github.com/corelan/mona 
+
 Put it in the folder “C:\Program Files (x86)\Immunity Inc\Immunity Debugger\PyCommands”
 
 In Immunity Debugger the search bar at the very bottom type:
@@ -274,14 +280,19 @@ while True:
 
 #### Windows 10:
 In Immunity, go back to the main screen and click bluish black arrow at the top
+
 should pop up a window saying expression to follow. Type in the register from before: 
+
 625011af
+
 hit ok
 
 In the upper left window it should show our jump point at the top, like so:
+
 625011AF  FFE4		JMP ESP
 
 Hit F2, this will set a break point and change the 625011AF blue
+
 hit play and go back to Kali and run overflow.py, when you come back to Immunity you should see Breakpoint at essfunc.625011AF
 
 
@@ -339,5 +350,6 @@ Make sure VulnServer is running as admin, Immunity shouldn’t be needed anymore
 
 #### Kali Linux:
 run bof.py
+
 check terminal running NetCat and you should have a connection
 
