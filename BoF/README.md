@@ -18,7 +18,8 @@ All python code here is written in python 2 because that is what comes with kali
 3. Vulnerable software: VulnServer (thegreycorner)
 4. Kali Linux, for attacking the Vulnerable Software.
 5. MSFVenom to generate the shellcode
-
+6. mona.py from https://github.com/corelan/mona
+7. Python 2.7 (can be downloaded and installed by Immunity Debugger)
  
 ## Spiking: 
 
